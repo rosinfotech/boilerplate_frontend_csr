@@ -1,0 +1,30 @@
+@import "tailwindcss/preflight" layer(base) disable;
+@import "tailwindcss";
+@import "./theme-dark.css";
+@import "./theme-light.css";
+@import "./theme-common.css";
+
+html {
+    height: 100dvh;
+    width: 100dvw;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    background-color: var(--color-background, #ffffff);
+    color: var(--color-text, #1a1a1a);
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+html,
+body {
+    touch-action: manipulation;
+}
+
+#root {
+    height: 100%;
+    width: 100%;
+}

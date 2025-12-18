@@ -1,0 +1,139 @@
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-RegularItalic.otf") format("opentype");
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-Thin.otf") format("opentype");
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-ThinItalic.otf") format("opentype");
+    font-weight: 100;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-Hairline.otf") format("opentype");
+    font-weight: 100; /* В CSS нет отдельного значения для Hairline, часто используют 100 */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-HairlineItalic.otf") format("opentype");
+    font-weight: 100; /* В CSS нет отдельного значения для Hairline, часто используют 100 */
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-ExtraLight.otf") format("opentype");
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-ExtraLightItalic.otf") format("opentype");
+    font-weight: 200;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-Light.otf") format("opentype");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-LightItalic.otf") format("opentype");
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-Book.otf") format("opentype");
+    font-weight: 400; /* Book часто соответствует normal (400) */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-BookItalic.otf") format("opentype");
+    font-weight: 400; /* Book часто соответствует normal (400) */
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-SemiBold.otf") format("opentype");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-SemiBoldItalic.otf") format("opentype");
+    font-weight: 600;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-Bold.otf") format("opentype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-BoldItalic.otf") format("opentype");
+    font-weight: 700;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-Heavy.otf") format("opentype");
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-HeavyItalic.otf") format("opentype");
+    font-weight: 800;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-Black.otf") format("opentype");
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Mont";
+    src: url("Mont-BlackItalic.otf") format("opentype");
+    font-weight: 900;
+    font-style: italic;
+}
