@@ -19,7 +19,7 @@ const config: CapacitorConfig = {
             url: `http://localhost:${port}`,
         }),
     },
-    webDir: "dist-mobile/client",
+    webDir: ".build/mobile/client",
 };
 
 export default config;

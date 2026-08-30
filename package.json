@@ -1,7 +1,7 @@
 {
     "name": "boilerplate-frontend-tanstack-router",
     "private": true,
-    "version": "0.1.0",
+    "version": "0.1.1",
     "type": "module",
     "scripts": {
         "build": "dotenv -e envs/.env.production -e envs/.env.local -- vite build --mode production",
@@ -21,9 +21,9 @@
         "lint:fix": "eslint . --fix",
         "mobile:assets": "capacitor-assets generate --assetPath src/capacitor/assets --iconBackgroundColor 'transparent' --iconBackgroundColorDark 'transparent' --ios --android",
         "mobile:init": "npx cap add ios && npx cap add android",
-        "mobile:prepare-webdir": "node .scripts/prepare-mobile-webdir.mjs",
+        "mobile:prepare-webdir": "node .scripts/prepare-mobile-webdir.ts",
         "prepare": "husky",
-        "start": "node .output/server/index.mjs",
+        "start": "node .build/web/server/index.mjs",
         "stylelint": "stylelint \"**/*.{css,scss}\"",
         "stylelint:fix": "stylelint \"**/*.{css,scss}\" --fix",
         "test": "vitest --run",

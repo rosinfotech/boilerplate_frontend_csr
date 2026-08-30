@@ -4,6 +4,15 @@
 
 <!-- markdownlint-disable MD024 -->
 
+## [0.1.1] - 2026-08-30
+
+### Changed
+
+- Consolidated all build artifacts into a single `.build/` directory with per-target subdirectories (`.build/web`, `.build/mobile`, `.build/tmp`);
+- Untracked working env files from git — only `envs/.env.example` is committed now;
+- Rewrote the mobile webDir preparation script in TypeScript (runs natively via Node.js type stripping);
+- Aligned Vite/Nitro/Capacitor/Docker/Makefile and ignore configs with the new build output layout;
+
 ## [0.1.0] - 2026-08-30
 
 ### Added

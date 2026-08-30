@@ -14,6 +14,8 @@ import { getGitDescribe } from "./.scripts/get-git-describe";
 
 const PORT = 33333;
 
+const BUILD_DIR = path.resolve(__dirname, "./.build/");
+
 export default defineConfig(async ({ mode }) => {
     const envDir = path.resolve(__dirname, "./envs/");
     const envVariables = loadEnv(mode, envDir);
@@ -42,12 +44,13 @@ export default defineConfig(async ({ mode }) => {
     );
 
     const srcDir = path.resolve(__dirname, "./src/");
+    const platformBuildDir = path.resolve(BUILD_DIR, `./${platform}/`);
 
     return {
         build: {
             emptyOutDir: true,
             minify: true,
-            outDir: path.resolve(__dirname, isMobile ? "./dist-mobile/" : "./dist/"),
+            outDir: platformBuildDir,
             target: "ES2022",
         },
         css: {
@@ -70,6 +73,7 @@ export default defineConfig(async ({ mode }) => {
                 router: {
                     generatedRouteTree: isMobile ? "routeTree.mobile.gen.ts" : "routeTree.gen.ts",
                     routeFileIgnorePattern: isMobile ? "^_web\\." : "^_mobile\\.",
+                    tmpDir: path.resolve(BUILD_DIR, "./tmp/"),
                 },
                 srcDirectory: "src",
                 ...(isMobile
@@ -81,7 +85,17 @@ export default defineConfig(async ({ mode }) => {
                     : {}),
             }),
             react(),
-            ...(isMobile ? [] : [nitro()]),
+            ...(isMobile
+                ? []
+                : [
+                      nitro({
+                          output: {
+                              dir: platformBuildDir,
+                              publicDir: path.resolve(platformBuildDir, "./public/"),
+                              serverDir: path.resolve(platformBuildDir, "./server/"),
+                          },
+                      }),
+                  ]),
         ],
         publicDir: path.resolve(__dirname, "./public/"),
         resolve: {

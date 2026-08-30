@@ -1,9 +1,5 @@
-.output/
+.build/
 android/
-build/
 coverage/
-dist-mobile/
-dist/
 ios/
 node_modules/
-www/

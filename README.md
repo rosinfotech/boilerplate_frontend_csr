@@ -24,9 +24,9 @@
 
 One codebase builds two artifacts of the same TanStack Start application:
 
-- **Web = SSR** — `npm run build` produces a Node SSR server (`.output/server/index.mjs` via the Nitro/Vite pipeline) plus client assets. Every request gets a full streamed HTML document with route-level `<head>` management (title, description, OpenGraph, twitter), loaders execute on the server and their data is embedded into the response. Deployed as a Node process behind a reverse proxy (nginx);
+- **Web = SSR** — `npm run build` produces a Node SSR server (.build/web (server/index.mjs) via the Nitro/Vite pipeline) plus client assets. Every request gets a full streamed HTML document with route-level `<head>` management (title, description, OpenGraph, twitter), loaders execute on the server and their data is embedded into the response. Deployed as a Node process behind a reverse proxy (nginx);
 
-- **Mobile = SPA-shell** — `npm run build:mobile` configures `tanstackStart({ spa: { enabled: true } })`. After the client build, TanStack Start prerenders the root route into a single `/_shell.html` (the router's pending fallback stands in for matched routes). The shell is copied to `index.html` with relative asset URLs (`./assets/...`), web-only artifacts (robots.txt, sitemap.xml) are stripped, and the result becomes the Capacitor `webDir` (`dist-mobile/client`). No SSR server ever lands inside an APK/IPA;
+- **Mobile = SPA-shell** — `npm run build:mobile` configures `tanstackStart({ spa: { enabled: true } })`. After the client build, TanStack Start prerenders the root route into a single `/_shell.html` (the router's pending fallback stands in for matched routes). The shell is copied to `index.html` with relative asset URLs (`./assets/...`), web-only artifacts (robots.txt, sitemap.xml) are stripped, and the result becomes the Capacitor `webDir` (`.build/mobile/client`). No SSR server ever lands inside an APK/IPA;
 
 Unlike the NextJS boilerplate this repo does not need the `pageExtensions` platform trick: platform routing is handled by the router itself.
 
@@ -100,7 +100,7 @@ Honest limitations:
 
   - `npm run build`;
 
-  - Start the SSR server: `npm run start` (`node .output/server/index.mjs`, honours `PORT`/`HOSTNAME`);
+  - Start the SSR server: `npm run start` (`node .build/web/server/index.mjs`, honours `PORT`/`HOSTNAME`);
 
 - Mobile:
 
