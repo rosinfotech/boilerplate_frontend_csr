@@ -7,17 +7,23 @@ import eslintConfigPrettier from "eslint-config-prettier";
 import globals from "globals";
 import typescriptPlugin from "typescript-eslint";
 
-
 export default [
     {
         ignores: [
             "**/*.min.js",
+            "**/.DS_Store",
+            "**/.output/",
             "**/.vscode/",
             "**/android/",
             "**/build/",
             "**/coverage/",
+            "**/dist/",
+            "**/dist-mobile/",
             "**/ios/",
             "**/node_modules/",
+            "**/www/",
+            "src/routeTree.gen.ts",
+            "src/routeTree.mobile.gen.ts",
         ],
     },
 
@@ -31,7 +37,7 @@ export default [
         files: ["**/*.{js,mjs,cjs,ts,tsx,mts,cts}"],
 
         languageOptions: {
-            ecmaVersion: 2020,
+            ecmaVersion: 2022,
             globals: {
                 ...globals.browser,
                 ...globals.node,
@@ -58,6 +64,9 @@ export default [
             ...(javascriptConfig.rules || {}),
             ...(importConfig.rules || {}),
             ...(typescriptConfig.rules || {}),
+
+            "import-x/newline-after-import": ["error", { count: 1 }],
+            "import-x/no-unused-modules": "off",
         },
 
         settings: {
@@ -65,6 +74,10 @@ export default [
             ...(javascriptConfig.settings || {}),
             ...(importConfig.settings || {}),
             ...(typescriptConfig.settings || {}),
+
+            react: {
+                version: "19.2",
+            },
         },
     },
 

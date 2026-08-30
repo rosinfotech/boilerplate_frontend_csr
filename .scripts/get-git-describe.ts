@@ -2,7 +2,6 @@ import { exec } from "child_process";
 import { promisify } from "util";
 import gitDescribe from "git-describe";
 
-
 const execAsync = promisify(exec);
 
 export const getGitDescribe = async () => {

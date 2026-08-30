@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://boilerplate-frontend-tanstack-router.demo.rosinfo.tech/sitemap.xml

@@ -1,0 +1,3 @@
+{
+    "extends": "@rosinfo.tech/stylelint-config-standard"
+}

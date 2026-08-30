@@ -2,7 +2,9 @@ import type { EventEmitter } from "node:events";
 import type { ClientRequest, IncomingMessage } from "node:http";
 import { default as path } from "node:path";
 import tailwindcss from "@tailwindcss/vite";
+import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import react from "@vitejs/plugin-react";
+import { nitro } from "nitro/vite";
 import { defineConfig, loadEnv } from "vite";
 import circleDependencyPlugin from "vite-plugin-circular-dependency";
 import magicalSvgPlugin from "vite-plugin-magical-svg";
@@ -10,16 +12,24 @@ import { mockDevServerPlugin } from "vite-plugin-mock-dev-server";
 import defaultMockDevServerConfig from "./.mock/config";
 import { getGitDescribe } from "./.scripts/get-git-describe";
 
+const PORT = 33333;
 
 export default defineConfig(async ({ mode }) => {
-    const PORT = 33333;
     const envDir = path.resolve(__dirname, "./envs/");
     const envVariables = loadEnv(mode, envDir);
     const gitDescribe = await getGitDescribe();
-    const shouldUseMock = envVariables.VITE_DEV_SERVER_USE_MOCK === "true";
-    const shouldLogProxy = envVariables.VITE_DEV_SERVER_LOG_PROXY === "true";
+
+    const platform = process.env.VITE_PLATFORM === "mobile" ? "mobile" : "web";
+    const isMobile = platform === "mobile";
+
+    const shouldUseMock =
+        (process.env.VITE_DEV_SERVER_USE_MOCK ?? envVariables.VITE_DEV_SERVER_USE_MOCK) === "true";
+    const shouldLogProxy =
+        (process.env.VITE_DEV_SERVER_LOG_PROXY ?? envVariables.VITE_DEV_SERVER_LOG_PROXY) ===
+        "true";
 
     console.log(mode);
+    console.log(`Platform: ${platform}`);
     console.log(
         JSON.stringify(
             {
@@ -31,28 +41,24 @@ export default defineConfig(async ({ mode }) => {
         )
     );
 
+    const srcDir = path.resolve(__dirname, "./src/");
+
     return {
         build: {
-            assetsDir: "assets",
-            cssCodeSplit: false,
             emptyOutDir: true,
-            inlineDynamicImports: true,
             minify: true,
-            outDir: path.resolve(__dirname, "build"),
-            rollupOptions: {
-                input: {
-                    main: path.resolve(__dirname, "index.html"),
-                },
-            },
-            target: "ES2020",
+            outDir: path.resolve(__dirname, isMobile ? "./dist-mobile/" : "./dist/"),
+            target: "ES2022",
         },
         css: {
             devSourcemap: true,
         },
-        define: gitDescribe,
+        define: {
+            ...gitDescribe,
+            "import.meta.env.VITE_PLATFORM": JSON.stringify(platform),
+        },
         envDir,
         plugins: [
-            react(),
             tailwindcss(),
             magicalSvgPlugin({
                 svgo: false,
@@ -60,12 +66,54 @@ export default defineConfig(async ({ mode }) => {
             }),
             circleDependencyPlugin(),
             shouldUseMock ? mockDevServerPlugin(defaultMockDevServerConfig) : undefined,
+            tanstackStart({
+                router: {
+                    generatedRouteTree: isMobile ? "routeTree.mobile.gen.ts" : "routeTree.gen.ts",
+                    routeFileIgnorePattern: isMobile ? "^_web\\." : "^_mobile\\.",
+                },
+                srcDirectory: "src",
+                ...(isMobile
+                    ? {
+                          spa: {
+                              enabled: true,
+                          },
+                      }
+                    : {}),
+            }),
+            react(),
+            ...(isMobile ? [] : [nitro()]),
         ],
-        publicDir: path.resolve(__dirname, "public"),
+        publicDir: path.resolve(__dirname, "./public/"),
         resolve: {
-            alias: {
-                "@": path.resolve(__dirname, "src"),
-            },
+            alias: [
+                {
+                    find: /^@\/route-tree$/,
+                    replacement: path.resolve(
+                        srcDir,
+                        isMobile ? "routeTree.mobile.gen.ts" : "routeTree.gen.ts"
+                    ),
+                },
+                {
+                    find: /^@\/layout$/,
+                    replacement: path.resolve(
+                        srcDir,
+                        isMobile ? "layouts/LayoutContentMobile" : "layouts/LayoutContent"
+                    ),
+                },
+                {
+                    find: /^@\/page-index$/,
+                    replacement: path.resolve(
+                        srcDir,
+                        isMobile
+                            ? "pages/IndexPage/IndexPage.mobile.tsx"
+                            : "pages/IndexPage/IndexPage.tsx"
+                    ),
+                },
+                {
+                    find: "@",
+                    replacement: srcDir,
+                },
+            ],
         },
         server: {
             host: true,
@@ -93,9 +141,11 @@ export default defineConfig(async ({ mode }) => {
                             );
                         });
                     },
-                    rewrite: (path: string) => path.replace(/\/proxy-me/, ""),
+                    rewrite: (pathValue: string) => pathValue.replace(/\/proxy-me/, ""),
                     secure: false,
-                    target: envVariables.VITE_API_BASE_URL_ORIGINAL,
+                    target:
+                        process.env.VITE_API_BASE_URL_ORIGINAL ??
+                        envVariables.VITE_API_BASE_URL_ORIGINAL,
                     ws: true,
                 },
             },

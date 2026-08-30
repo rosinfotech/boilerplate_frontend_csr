@@ -1,7 +1,6 @@
 import { describe, expectTypeOf, it } from "vitest";
 import { stringToNumericHash } from "./string-to-numeric-hash";
 
-
 describe("utils", () => {
     describe("stringToNumericHash", () => {
         it("should be number", () => {

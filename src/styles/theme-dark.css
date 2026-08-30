@@ -1,3 +1,4 @@
+/* stylelint-disable rule-empty-line-before, at-rule-empty-line-before */
 @variant dark (&:where(.dark, .dark *));
 
 @layer theme {

@@ -1,3 +1,7 @@
 {
-    "*.{ts,tsx,js}": ["prettier --write", "eslint --fix --no-error-on-unmatched-pattern"]
+    "*.{ts,tsx,js}": [
+        "prettier --write",
+        "stylelint \"**/*.{css,scss}\" --fix",
+        "eslint --fix --no-error-on-unmatched-pattern"
+    ]
 }

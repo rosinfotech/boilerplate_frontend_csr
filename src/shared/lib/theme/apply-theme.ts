@@ -1,6 +1,5 @@
 import type { Theme } from "@/shared/types/theme";
 
-
 export const applyTheme = (theme: Theme): void => {
     if (typeof window === "undefined") {
         return;

@@ -1,3 +1,13 @@
-node_modules/
-build/
 *.md
+.output/
+android/
+build/
+coverage/
+dist-mobile/
+dist/
+ios/
+node_modules/
+package-lock.json
+src/routeTree.gen.ts
+src/routeTree.mobile.gen.ts
+www/

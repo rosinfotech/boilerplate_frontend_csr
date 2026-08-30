@@ -13,3 +13,8 @@ export const GIT_COMMIT_HASH = import.meta.env.VITE_GIT_COMMIT_HASH;
 export const GIT_COMMIT_HASH_SHORT = import.meta.env.VITE_GIT_COMMIT_HASH_SHORT;
 export const GIT_DISTANCE = import.meta.env.VITE_GIT_DISTANCE;
 export const GIT_TAG = import.meta.env.VITE_GIT_TAG;
+
+export const PLATFORM = import.meta.env.VITE_PLATFORM ?? "web";
+
+export const IS_MOBILE = PLATFORM === "mobile";
+export const IS_WEB = PLATFORM === "web";

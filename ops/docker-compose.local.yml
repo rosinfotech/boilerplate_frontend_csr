@@ -1,0 +1,16 @@
+name: boilerplate_frontend_tanstack_router_local
+
+services:
+    app:
+        build:
+            args:
+                PORT: ${PORT:-33333}
+            context: ..
+            dockerfile: ops/Dockerfile.local
+        container_name: boilerplate_frontend_tanstack_router_local
+        env_file:
+            - ../envs/.env.local
+        image: boilerplate_frontend_tanstack_router:local-0.1.0
+        ports:
+            - "${PORT:-33333}:${PORT:-33333}"
+        restart: unless-stopped

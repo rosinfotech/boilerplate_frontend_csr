@@ -9,6 +9,7 @@ interface ImportMetaEnv {
     readonly VITE_GIT_COMMIT_HASH_SHORT: string;
     readonly VITE_GIT_DISTANCE: string;
     readonly VITE_GIT_TAG: string;
+    readonly VITE_PLATFORM: "web" | "mobile";
 }
 
 interface ImportMeta {
