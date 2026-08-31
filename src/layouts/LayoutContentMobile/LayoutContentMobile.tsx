@@ -7,7 +7,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { MENU_ITEMS_MOBILE } from "@/configs/menu-items-mobile";
 import { antDesignThemeDark } from "@/layouts/constants/theme-dark";
 import { antDesignThemeLight } from "@/layouts/constants/theme-light";
-import { useHydrateStore, useResolvedTheme } from "@/shared/lib/hooks";
+import { useHydrateStore, useResolvedTheme, useSafeArea } from "@/shared/lib/hooks";
 import {
     selectCloseMobileMenu,
     selectIsMobileMenuOpen,
@@ -21,6 +21,7 @@ export const LayoutContentMobile: FC<PropsWithChildren> = props => {
     const { children } = props;
 
     useHydrateStore();
+    useSafeArea();
 
     const resolvedTheme = useResolvedTheme();
     const isMobileMenuOpen = useStore(selectIsMobileMenuOpen);

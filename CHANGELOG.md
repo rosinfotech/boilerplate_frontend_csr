@@ -4,6 +4,14 @@
 
 <!-- markdownlint-disable MD024 -->
 
+## [0.1.2] - 2026-09-01
+
+### Changed
+
+- Replaced `@capacitor-community/safe-area` with `capacitor-plugin-safe-area` (Capacitor 8 support, `safeAreaChanged` live updates);
+- Safe-area insets are now applied via `--safe-area-inset-*` CSS custom properties with `env(safe-area-inset-*)` fallback for web builds;
+- Plugins debug page shows live safe-area insets from the plugin instead of polling computed styles;
+
 ## [0.1.1] - 2026-08-30
 
 ### Changed

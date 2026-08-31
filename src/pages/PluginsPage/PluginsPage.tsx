@@ -1,5 +1,7 @@
 import { Capacitor } from "@capacitor/core";
+import { SafeArea } from "capacitor-plugin-safe-area";
 import { useEffect, useState } from "react";
+import { applySafeAreaInsets, type TSafeAreaInsets } from "@/shared/lib/hooks";
 
 interface IPluginInfo {
     available: boolean;
@@ -8,11 +10,11 @@ interface IPluginInfo {
 
 export const PluginsPage = () => {
     const [plugins, setPlugins] = useState<IPluginInfo[]>([]);
-    const [safeAreaInsets, setSafeAreaInsets] = useState({
-        bottom: "0px",
-        left: "0px",
-        right: "0px",
-        top: "0px",
+    const [safeAreaInsets, setSafeAreaInsets] = useState<TSafeAreaInsets>({
+        bottom: 0,
+        left: 0,
+        right: 0,
+        top: 0,
     });
 
     useEffect(() => {
@@ -31,23 +33,45 @@ export const PluginsPage = () => {
             setPlugins(pluginList);
         };
 
-        const updateSafeArea = () => {
-            const computedStyle = getComputedStyle(document.documentElement);
+        void checkPlugins();
 
-            setSafeAreaInsets({
-                bottom: computedStyle.getPropertyValue("padding-bottom") || "0px",
-                left: computedStyle.getPropertyValue("padding-left") || "0px",
-                right: computedStyle.getPropertyValue("padding-right") || "0px",
-                top: computedStyle.getPropertyValue("padding-top") || "0px",
-            });
+        if (!Capacitor.isNativePlatform()) {
+            return;
+        }
+
+        let isDisposed = false;
+        let listenerHandle: { remove: () => Promise<void> } | null = null;
+
+        const updateSafeArea = (insets: TSafeAreaInsets) => {
+            if (isDisposed) {
+                return;
+            }
+
+            setSafeAreaInsets(insets);
+            applySafeAreaInsets(insets);
         };
 
-        void checkPlugins();
-        updateSafeArea();
+        void SafeArea.getSafeAreaInsets().then(({ insets }) => {
+            updateSafeArea(insets);
+        });
 
-        const interval = setInterval(updateSafeArea, 1000);
+        void SafeArea.addListener("safeAreaChanged", ({ insets }) => {
+            updateSafeArea(insets);
+        }).then(handle => {
+            if (isDisposed) {
+                void handle.remove();
+            } else {
+                listenerHandle = handle;
+            }
+        });
 
-        return () => clearInterval(interval);
+        return () => {
+            isDisposed = true;
+
+            if (listenerHandle) {
+                void listenerHandle.remove();
+            }
+        };
     }, []);
 
     return (
@@ -92,19 +116,19 @@ export const PluginsPage = () => {
             </div>
 
             <div className="mb-6">
-                <h2 className="mb-2 font-semibold text-xl">Safe Area Insets (from body padding)</h2>
+                <h2 className="mb-2 font-semibold text-xl">Safe Area Insets (from plugin)</h2>
                 <div className="bg-gray-100 dark:bg-gray-800 p-4 rounded">
                     <p>
-                        <strong>Top:</strong> {safeAreaInsets.top}
+                        <strong>Top:</strong> {safeAreaInsets.top}px
                     </p>
                     <p>
-                        <strong>Bottom:</strong> {safeAreaInsets.bottom}
+                        <strong>Bottom:</strong> {safeAreaInsets.bottom}px
                     </p>
                     <p>
-                        <strong>Left:</strong> {safeAreaInsets.left}
+                        <strong>Left:</strong> {safeAreaInsets.left}px
                     </p>
                     <p>
-                        <strong>Right:</strong> {safeAreaInsets.right}
+                        <strong>Right:</strong> {safeAreaInsets.right}px
                     </p>
                 </div>
             </div>
